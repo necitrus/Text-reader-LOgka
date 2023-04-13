@@ -108,7 +108,6 @@ global strikeout_icon
 global select_icon
 global text_to_speech_icon
 global speech_to_text_icon
-global theme_icon
 global exit_icon
 global align_left_icon
 global align_right_icon
@@ -130,7 +129,6 @@ underline_icon = PhotoImage(file='icons/underline.png')
 select_icon = PhotoImage(file='icons/cursor.png')
 text_to_speech_icon = PhotoImage(file='icons/text to speech.png')
 speech_to_text_icon = PhotoImage(file='icons/speech.png')
-theme_icon = PhotoImage(file='icons/theme.png')
 exit_icon = PhotoImage(file='icons/exit.png')
 align_left_icon = PhotoImage(file= 'icons/align_left.png')
 align_right_icon = PhotoImage(file= 'icons/align_right.png')
@@ -555,14 +553,12 @@ speech_to_text_btn= Button(shortcut_bar,image=speech_to_text_icon,height=40,widt
 speech_to_text_btn.pack(side='left')
 ################################################################################
 # Добавление основного контекстного текстового виджета и виджета полосы прокрутки
-
 content_text = Text(root, wrap='word',font=Font)
-content_text.pack(expand='yes', fill='both')
-
-scroll_bar = Scrollbar(content_text)
+scroll_bar = Scrollbar(root)
+scroll_bar.pack(side='right', fill='y')
+content_text.pack(fill='both', expand=True)
 content_text.configure(yscrollcommand=scroll_bar.set)
 scroll_bar.config(command=content_text.yview)
-scroll_bar.pack(side='right', fill='y')
 
 
 # Настройка всплывающего меню
