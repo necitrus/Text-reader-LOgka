@@ -13,7 +13,8 @@ from PIL import Image, ImageTk
 import pyttsx3
 from tkinter import font
 import cv2 as cv
-
+import tkinter.messagebox
+from tkinter import messagebox
 
 
 
@@ -112,6 +113,7 @@ global exit_icon
 global align_left_icon
 global align_right_icon
 global align_center_icon
+global compare_icon
 
 new_file_icon = PhotoImage(file='icons/new_file.png')
 open_file_icon = PhotoImage(file='icons/open_file.png')
@@ -135,6 +137,7 @@ align_right_icon = PhotoImage(file= 'icons/align_right.png')
 align_center_icon = PhotoImage(file= 'icons/align_center.png')
 tool_bar_icon = tk.PhotoImage(file="icons/tool_bar.png")
 status_bar_icon = tk.PhotoImage(file="icons/status_bar.png")
+compare_icon = PhotoImage(file='icons/compare.png')
 ############################################################################
 ########################## МЕНЮ РЕДАКТИРОВАНИЯ #############################
 def cut():
@@ -156,6 +159,17 @@ def clearall():
 def selectall(event=None):
         content_text.tag_add('sel','1.0','end')
         return "break"
+# Сравнение файлов
+def compare_files():
+        file1 = filedialog.askopenfilename(initialdir="C:/gui/", title="Choose File", filetypes=(
+        ("Text Files", "*.txt"), ("HTML Files", "*.html"), ("Python Files", "*.py"), ("All Files", "*.*")))
+
+        text_file1 = open(file1, 'r')
+
+        file1_data = text_file1.read()
+        file2_data = content_text.get(1.0,END)
+        similarity = SequenceMatcher(None, file1_data, file2_data).ratio()
+        messagebox.showinfo("Плагиат", f"Содержание составляет {similarity * 100:.3f}% общего.")
 ##################################################################
 #################### Найти или Заменить ##########################
 def find_text(event=None):
@@ -430,6 +444,9 @@ file_menu.add_command(label='Новый файл', accelerator='Ctrl+N', compoun
 file_menu.add_command(label='Открыть', accelerator='Ctrl+O', compound='left', image=open_file_icon, underline=0, command=open_file)
 file_menu.add_command(label="Сохранить", accelerator='Ctrl+S', compound='left', image=save_file_icon, underline=0, command=save)
 file_menu.add_command(label="Сохранить как", accelerator='Ctrl+Shift+S',image=save_file_icon, compound='left', underline=0, command = save_as)
+file_menu.add_separator()
+file_menu.add_command(label="Сравнить файл",image=compare_icon,compound='left', command=compare_files)
+file_menu.add_separator()
 file_menu.add_command(label="Выход", accelerator='Alt+F4',image=exit_icon, compound='left', underline=0, command=exit_editor)
 menu_bar.add_cascade(label='Файл', menu=file_menu)
 
