@@ -458,6 +458,21 @@ def update_cursor(event=None):
         infotext = "Строка: {0} | Столбец: {1}".format(line_num, col_num)
         cursor_info_bar.config(text=infotext)
 
+#Подсветка строки
+def highlight_line(interval=100):
+        content_text.tag_remove("active_line", 1.0, "end")
+        content_text.tag_add(
+            "active_line", "insert linestart", "insert lineend+1c")
+        content_text.after(interval, toggle_highlight)
+
+def undo_highlight():
+        content_text.tag_remove("active_line", 1.0, "end")
+
+def toggle_highlight(event=None):
+        if to_highlight_line.get():
+            highlight_line()
+        else:
+            undo_highlight()
 ######################
 #Изменить тему
 def change_theme(event=None):
@@ -541,6 +556,8 @@ view_menu.add_checkbutton(label="Строка нумерации", variable=show
 show_cursor_info=IntVar()
 show_cursor_info.set(1)
 view_menu.add_checkbutton(label='Показать положение курсора внизу', variable=show_cursor_info, command=show_cursor)
+to_highlight_line=IntVar()
+view_menu.add_checkbutton(label='Выделить текущую строку', variable=to_highlight_line, onvalue=1, offvalue=0,command=toggle_highlight)
 menu_bar.add_cascade(label='Просмотр', menu=view_menu)
 ##############################
 ###### Тема  ####
