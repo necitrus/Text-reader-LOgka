@@ -424,6 +424,41 @@ def exit_editor(event=None):
         if tkinter.messagebox.askyesno("Выход", "Вы уверены, что хотите выйти?))))))))))))))"):
             root.destroy()
 
+#Нумерация строк
+def get_line_numbers():
+        output = ''
+        if show_line_number.get():
+            row, col = content_text.index("end").split('.')
+            for i in range(1, int(row)):
+                output += str(i) + '\n'
+        return output
+
+def on_content_changed(event=None):
+        update_line_numbers()
+        update_cursor()
+
+def update_line_numbers(event=None):
+        line_numbers = get_line_numbers()
+        line_number_bar.config(state='normal', font=Font)
+        line_number_bar.delete('1.0', 'end')
+        line_number_bar.insert('1.0', line_numbers)
+        line_number_bar.config(state='disabled')
+
+# Добавление функциональности курсора
+def show_cursor():
+        show_cursor_info_checked = show_cursor_info.get()
+        if show_cursor_info_checked:
+            cursor_info_bar.pack(expand='no', fill=None, side='right', anchor='se')
+        else:
+            cursor_info_bar.pack_forget()
+
+def update_cursor(event=None):
+        row, col = content_text.index(INSERT).split('.')
+        line_num, col_num = str(int(row)), str(int(col) + 1)
+        infotext = "Строка: {0} | Столбец: {1}".format(line_num, col_num)
+        cursor_info_bar.config(text=infotext)
+
+######################
 #Изменить тему
 def change_theme(event=None):
         selected_theme = theme_choice.get()
@@ -496,12 +531,16 @@ def hide_statusbar():
 #################################################
 ####### Просмотр #######
 view_menu = Menu(menu_bar, tearoff=0)
-show_line_number=IntVar()
-show_line_number.set(1)
 view_menu.add_checkbutton(label="Панель инструментов", onvalue=True, offvalue=False, variable=show_toolbar,
                      image=tool_bar_icon, compound=tk.LEFT, command=hide_toolbar)
 view_menu.add_checkbutton(label="Строка состояния", onvalue=True, offvalue=False, variable=show_statusbar,
                      image=status_bar_icon, compound=tk.LEFT, command=hide_statusbar)
+show_line_number=IntVar()
+show_line_number.set(1)
+view_menu.add_checkbutton(label="Строка нумерации", variable=show_line_number)
+show_cursor_info=IntVar()
+show_cursor_info.set(1)
+view_menu.add_checkbutton(label='Показать положение курсора внизу', variable=show_cursor_info, command=show_cursor)
 menu_bar.add_cascade(label='Просмотр', menu=view_menu)
 ##############################
 ###### Тема  ####
@@ -569,6 +608,8 @@ text_to_speech_btn.pack(side='left')
 speech_to_text_btn= Button(shortcut_bar,image=speech_to_text_icon,height=40,width=40,command=speech_to_text, cursor="hand2")
 speech_to_text_btn.pack(side='left')
 ################################################################################
+line_number_bar = Text(root, width=2, padx=3, takefocus=0, fg='white', border=0, background='#282828', state='disabled',  wrap='none')
+line_number_bar.pack(side='left', fill='y')
 # Добавление основного контекстного текстового виджета и виджета полосы прокрутки
 content_text = Text(root, wrap='word',font=Font)
 scroll_bar = Scrollbar(root)
@@ -577,6 +618,9 @@ content_text.pack(fill='both', expand=True)
 content_text.configure(yscrollcommand=scroll_bar.set)
 scroll_bar.config(command=content_text.yview)
 
+# Добавление информационной метки курсора
+cursor_info_bar = Label(content_text, text='Строка: 1 | Столбец: 1')
+cursor_info_bar.pack(expand='no', fill=None, side='right', anchor='se')
 
 # Настройка всплывающего меню
 popup_menu = Menu(content_text,tearoff=0)
@@ -624,7 +668,8 @@ content_text.bind("<Control-I>",italics_it)
 content_text.bind("<Control-i>",italics_it)
 content_text.bind("<Control-U>",change_underline)
 content_text.bind("<Control-u>",change_underline)
-
+content_text.bind('<Any-KeyPress>', on_content_changed)
+content_text.tag_configure('active_line', background='ivory2')
 content_text.bind('<Button-3>', show_popup_menu)
 content_text.focus_set()
 #############################################################################################################
