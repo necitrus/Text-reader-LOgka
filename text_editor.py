@@ -3,7 +3,6 @@ import tkinter as tk
 from tkinter import ttk, INSERT
 import tkinter
 import os
-import tkinter.filedialog
 from difflib import SequenceMatcher
 from tkinter import filedialog
 from tkinter import colorchooser
@@ -12,8 +11,6 @@ import random
 from PIL import Image, ImageTk
 import pyttsx3
 from tkinter import font
-import cv2 as cv
-import tkinter.messagebox
 from tkinter import messagebox
 import time
 
@@ -52,7 +49,7 @@ def open_file(event=None):
         return
     except:
         return
-    content_text.title(os.path.basename(url))
+    root.title(os.path.basename(url))
 
 def write_to_file(file_name):
         try:
