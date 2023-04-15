@@ -117,6 +117,7 @@ global compare_icon
 global import_audio_icon
 global insert_image_icon
 global add_date_icon
+global keyboard_icon
 
 new_file_icon = PhotoImage(file='icons/new_file.png')
 open_file_icon = PhotoImage(file='icons/open_file.png')
@@ -144,6 +145,7 @@ compare_icon = PhotoImage(file='icons/compare.png')
 import_audio_icon = PhotoImage(file='icons/import audio.png')
 insert_image_icon = PhotoImage(file='icons/insert image.png')
 add_date_icon = PhotoImage(file='icons/date.png')
+keyboard_icon = PhotoImage(file='icons/keyboard.png')
 ############################################################################
 ########################## МЕНЮ РЕДАКТИРОВАНИЯ #############################
 def cut():
@@ -516,7 +518,111 @@ def change_theme(event=None):
 # Всплывающее меню
 def show_popup_menu(event):
         popup_menu.tk_popup(event.x_root, event.y_root)
+################################### Виртуальная клавиатура #########################################
+def keyboard():
+        kb = tkinter.Toplevel(root)
+        global buttons
+        buttons = [
+                        '~', '`', '!', '@', '#', '$', '%', '^', '&', '*', '(', ')',  '_', '-', 'BACK',
+                        'TAB', 'й', 'ц', 'у', 'к', 'е', 'н', 'г', 'ш', 'щ', 'з', 'х', 'ъ', '\\', '/',
+                        'RUS-CAPS', 'ф', 'ы', 'в', 'а', 'п', 'р', 'о', 'л', 'д', 'ж', 'э', '[', ']', 'ENTER',
+                        'я', 'ч', 'с', 'м', 'и', 'т', 'ь', 'б', 'ю', ',', '.', '?', '№', '+', '=',
+                        'LAT-CAPS', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'SPACE'
+        ]
+        global caps_status
+        caps_status= False
+        global lang_status
+        lang_status = False
+        def select(value):
+            if value == "BACK":
+                input_val = content_text.get("1.0", 'end-2c')
+                content_text.delete("1.0", "end")
+                content_text.insert("1.0", input_val, "end")
 
+            elif value == "SPACE":
+                content_text.insert(tkinter.END, ' ')
+            elif value == "TAB":
+                content_text.insert(tkinter.END, '\t')
+            elif value == "ENTER":
+                content_text.insert(tkinter.END, '\n')
+            elif value == "RUS-CAPS":
+                global caps_status
+                global buttons
+                if caps_status == True:
+                    caps_status = False
+                    buttons = [
+                        '~', '`', '!', '@', '#', '$', '%', '^', '&', '*', '(', ')',  '_', '-', 'BACK',
+                        'TAB', 'й', 'ц', 'у', 'к', 'е', 'н', 'г', 'ш', 'щ', 'з', 'х', 'ъ', '\\', '/',
+                        'RUS-CAPS', 'ф', 'ы', 'в', 'а', 'п', 'р', 'о', 'л', 'д', 'ж', 'э', '[', ']', 'ENTER',
+                        'я', 'ч', 'с', 'м', 'и', 'т', 'ь', 'б', 'ю', ',', '.', '?', '№', '+', '=',
+                        'LAT-CAPS', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'SPACE'
+                    ]
+                    HosoPop()
+                elif caps_status == False:
+                    caps_status = True
+                    buttons = [
+                        '~','`', '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '_', '-', 'BACK',
+                        'TAB', 'Й', 'Ц', 'У', 'К', 'Е', 'Н', 'Г', 'Ш', 'Щ', 'З', 'Х', 'Ъ', '\\', '/',
+                        'RUS-CAPS', 'Ф', 'Ы', 'В', 'А', 'П', 'Р', 'О', 'Л', 'Д', 'Ж', 'Э', '[', ']', 'ENTER',
+                        'Я', 'Ч', 'С', 'М', 'И', 'Т', 'Ь', 'Б', 'Ю', ',', '.', '?', '№', '+', '=',
+                        'LAT-CAPS', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'SPACE'
+                    ]
+                    HosoPop()
+            elif value == "LAT-CAPS":
+                global lang_status
+                if lang_status == True:
+                    lang_status = False
+                    buttons = [
+                        '~', '`', '!', '@', '#', '$', '%', '^', '&', '*', '(', ')',  '_', '-', 'BACK',
+                        'TAB', 'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', '{', '}', '\\', '/',
+                        'RUS-CAPS', 'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ':', ';', '[', ']', 'ENTER',
+                        'z', 'x', 'c', 'v', 'b', 'n', 'm', '<', '>', ',', '.', '?', '№', '+', '=',
+                        'LAT-CAPS', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'SPACE'
+                    ]
+                    HosoPop()
+                elif lang_status == False:
+                    lang_status = True
+                    buttons = [
+                        '~', '`', '!', '@', '#', '$', '%', '^', '&', '*', '(', ')',  '_', '-', 'BACK',
+                        'TAB', 'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', '{', '}', '\\', '/',
+                        'RUS-CAPS', 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', ':', ';', '[', ']', 'ENTER',
+                        'Z', 'X', 'C', 'V', 'B', 'N', 'M', '<', '>', ',', '.', '?', '№', '+', '=',
+                        'LAT-CAPS', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'SPACE'
+                    ]
+                    HosoPop()
+            else:
+                content_text.insert(tkinter.END, value)
+        def HosoPop():
+            varRow = 1
+            varColumn = 0
+            Font_tuple = ("Helvetica", 10, "bold")
+            for button in buttons:
+                command = lambda x=button: select(x)
+                if button != "SPACE":
+                    but = Button(kb, text=button,font=Font_tuple, width=5, bg="#D1E7E0", fg="#5B8340", highlightthickness=4,
+                                 activebackground="gray65", highlightcolor='red', activeforeground="#000000",
+                                 relief="raised", padx=8,
+                                 pady=4, bd=4, command=command)
+                    but.grid(row=varRow, column=varColumn)
+                if button == "SPACE":
+                    but = Button(kb, text=button,font=Font_tuple, width=60, bg="#D1E7E0", fg="#5B8340", highlightthickness=4,
+                                 activebackground="gray65", highlightcolor='red', activeforeground="#000000",
+                                 relief="raised", padx=4,
+                                 pady=4, bd=4, command=command)
+                    varRow += 1
+                    but.grid(row=varRow, columnspan=18)
+                varColumn += 1
+                if varColumn > 14:
+                    varColumn = 0
+                    varRow += 1
+        def main():
+            kb.title("On-screen Keyboard")
+            kb.iconphoto(False,PhotoImage(file="icons/keyboard.png"))
+            kb.resizable(0, 0)
+            HosoPop()
+            kb.mainloop()
+        main()
+########################################################################################################################
 ################################################# МЕНЮ #################################################################
 menu_bar = Menu(root) #menu begins
 
@@ -661,6 +767,8 @@ insertImage_btn= Button(shortcut_bar,image=insert_image_icon,height=40,width=40,
 insertImage_btn.pack(side='left')
 addDate_btn= Button(shortcut_bar,image=add_date_icon,height=40,width=40,command=addDate, cursor="hand2")
 addDate_btn.pack(side='left')
+keyboard_btn= Button(shortcut_bar,image=keyboard_icon,height=40,width=40,command=keyboard, cursor="hand2")
+keyboard_btn.pack(side='left')
 ################################################################################
 line_number_bar = Text(root, width=2, padx=3, takefocus=0, fg='white', border=0, background='#282828', state='disabled',  wrap='none')
 line_number_bar.pack(side='left', fill='y')
