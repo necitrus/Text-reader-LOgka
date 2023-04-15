@@ -114,6 +114,8 @@ global align_left_icon
 global align_right_icon
 global align_center_icon
 global compare_icon
+global import_audio_icon
+
 
 new_file_icon = PhotoImage(file='icons/new_file.png')
 open_file_icon = PhotoImage(file='icons/open_file.png')
@@ -138,6 +140,8 @@ align_center_icon = PhotoImage(file= 'icons/align_center.png')
 tool_bar_icon = tk.PhotoImage(file="icons/tool_bar.png")
 status_bar_icon = tk.PhotoImage(file="icons/status_bar.png")
 compare_icon = PhotoImage(file='icons/compare.png')
+import_audio_icon = PhotoImage(file='icons/import audio.png')
+
 ############################################################################
 ########################## МЕНЮ РЕДАКТИРОВАНИЯ #############################
 def cut():
@@ -280,6 +284,14 @@ def speech_to_text():
                 query = speech_to_text()
             content_text.insert(tk.INSERT, query, tk.END)
             return query
+#Импортированный звук
+def importAudioFlie():
+        string = content_text.get(1.0,END)
+        engine = pyttsx3.init()
+        # Мы можем использовать расширение файла как mp3, так и wav, оба будут работать
+        engine.save_to_file(string, 'speech.mp3')
+        engine.runAndWait()
+        messagebox.showinfo("Импортированный звук", "Ваш аудиофайл был импортирован.")
 #############################################################################################
 # Жирный шрифт
 def bold_it():
@@ -624,6 +636,8 @@ text_to_speech_btn= Button(shortcut_bar,image=text_to_speech_icon,height=40,widt
 text_to_speech_btn.pack(side='left')
 speech_to_text_btn= Button(shortcut_bar,image=speech_to_text_icon,height=40,width=40,command=speech_to_text, cursor="hand2")
 speech_to_text_btn.pack(side='left')
+importAudioFlie_btn= Button(shortcut_bar,image=import_audio_icon,height=40,width=40,command=importAudioFlie, cursor="hand2")
+importAudioFlie_btn.pack(side='left')
 ################################################################################
 line_number_bar = Text(root, width=2, padx=3, takefocus=0, fg='white', border=0, background='#282828', state='disabled',  wrap='none')
 line_number_bar.pack(side='left', fill='y')
