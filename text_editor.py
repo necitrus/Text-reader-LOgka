@@ -15,7 +15,7 @@ from tkinter import font
 import cv2 as cv
 import tkinter.messagebox
 from tkinter import messagebox
-
+import time
 
 
 root = Tk()
@@ -116,7 +116,7 @@ global align_center_icon
 global compare_icon
 global import_audio_icon
 global insert_image_icon
-
+global add_date_icon
 
 new_file_icon = PhotoImage(file='icons/new_file.png')
 open_file_icon = PhotoImage(file='icons/open_file.png')
@@ -143,7 +143,7 @@ status_bar_icon = tk.PhotoImage(file="icons/status_bar.png")
 compare_icon = PhotoImage(file='icons/compare.png')
 import_audio_icon = PhotoImage(file='icons/import audio.png')
 insert_image_icon = PhotoImage(file='icons/insert image.png')
-
+add_date_icon = PhotoImage(file='icons/date.png')
 ############################################################################
 ########################## МЕНЮ РЕДАКТИРОВАНИЯ #############################
 def cut():
@@ -295,6 +295,15 @@ def importAudioFlie():
         engine.runAndWait()
         messagebox.showinfo("Импортированный звук", "Ваш аудиофайл был импортирован.")
 #############################################################################################
+# Дата
+def addDate():
+        full_date = time.localtime()
+        day = str(full_date.tm_mday)
+        month = str(full_date.tm_mon)
+        year = str(full_date.tm_year)
+        date = day + '/' + month + '/' + year
+        content_text.insert(INSERT, date, "a")
+
 # Жирный шрифт
 def bold_it():
         # Create our font
@@ -650,6 +659,8 @@ importAudioFlie_btn= Button(shortcut_bar,image=import_audio_icon,height=40,width
 importAudioFlie_btn.pack(side='left')
 insertImage_btn= Button(shortcut_bar,image=insert_image_icon,height=40,width=40,command=insertImage, cursor="hand2")
 insertImage_btn.pack(side='left')
+addDate_btn= Button(shortcut_bar,image=add_date_icon,height=40,width=40,command=addDate, cursor="hand2")
+addDate_btn.pack(side='left')
 ################################################################################
 line_number_bar = Text(root, width=2, padx=3, takefocus=0, fg='white', border=0, background='#282828', state='disabled',  wrap='none')
 line_number_bar.pack(side='left', fill='y')
