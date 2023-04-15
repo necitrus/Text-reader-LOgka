@@ -115,6 +115,7 @@ global align_right_icon
 global align_center_icon
 global compare_icon
 global import_audio_icon
+global insert_image_icon
 
 
 new_file_icon = PhotoImage(file='icons/new_file.png')
@@ -141,6 +142,7 @@ tool_bar_icon = tk.PhotoImage(file="icons/tool_bar.png")
 status_bar_icon = tk.PhotoImage(file="icons/status_bar.png")
 compare_icon = PhotoImage(file='icons/compare.png')
 import_audio_icon = PhotoImage(file='icons/import audio.png')
+insert_image_icon = PhotoImage(file='icons/insert image.png')
 
 ############################################################################
 ########################## МЕНЮ РЕДАКТИРОВАНИЯ #############################
@@ -396,6 +398,14 @@ def align_right():
     content_text.insert(tk.INSERT, text_content, "right")
     align_right_btn.configure(command=align_right)
 ###################################
+#Добавление изображения
+imagelist = []
+def insertImage():
+        select_image = filedialog.askopenfilename(title="Select your image",
+                                                  filetypes=[("Image Files", "*.png"), ("Image Files", "*.jpg")])
+        if select_image:
+            imagelist.append(ImageTk.PhotoImage(file=select_image))
+            content_text.image_create(END, image=imagelist[-1])
 
 def SetFontSize():
     Font[1] = size_var.get()
@@ -638,6 +648,8 @@ speech_to_text_btn= Button(shortcut_bar,image=speech_to_text_icon,height=40,widt
 speech_to_text_btn.pack(side='left')
 importAudioFlie_btn= Button(shortcut_bar,image=import_audio_icon,height=40,width=40,command=importAudioFlie, cursor="hand2")
 importAudioFlie_btn.pack(side='left')
+insertImage_btn= Button(shortcut_bar,image=insert_image_icon,height=40,width=40,command=insertImage, cursor="hand2")
+insertImage_btn.pack(side='left')
 ################################################################################
 line_number_bar = Text(root, width=2, padx=3, takefocus=0, fg='white', border=0, background='#282828', state='disabled',  wrap='none')
 line_number_bar.pack(side='left', fill='y')
